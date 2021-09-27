@@ -72,10 +72,14 @@ struct tapes *parse_tape(char *tape_file_path, struct program *program){
     tapes->tape_count = line_count;
     tapes->tapes = malloc(line_count * sizeof(struct tape*));
 
+    struct tape *tape;
+    char *tmp_line;
+
     for (int i = 0; i < line_count; ++i) {
-        struct tape *tape = malloc(sizeof(struct tape));
+        tape = malloc(sizeof(struct tape));
 
         line_length = getline(&line, &buffer_size, file_ptr);
+        tmp_line = strdup(line);
 
         if (line_length == -1)
             exit(-1);
@@ -87,7 +91,7 @@ struct tapes *parse_tape(char *tape_file_path, struct program *program){
         if (line_length == 0)
             tape->length = 0;
 
-        tape->length = get_tape_length(line, line_length);
+        tape->length = get_tape_length(tmp_line, line_length);
         tape->tape_arr = malloc(tape->length * sizeof(int));
 
         int alphabet_element_length;
