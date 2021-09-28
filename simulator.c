@@ -3,14 +3,19 @@
 #include <string.h>
 #include "simulator.h"
 #include "helper.h"
+#include "math.h"
+
+int int_length(int number) {
+    return (int) floor(log10(abs(number))) + 1;
+}
 
 void print_tapes(struct tapes *tapes, struct program *program, char *prefix, int *head_positions) {
     for (int i = 0; i < program->head_count; ++i) {
         int head_position = head_positions[i];
 
-        int head_offset = strlen(prefix) + 2;
+        int head_offset = strlen(prefix) + int_length(i + 1) + 3;
         //print tape
-        printf("%s: ", prefix);
+        printf("%s %d: ", prefix, i + 1);
         for (int j = 0; j < tapes->tapes[i]->length; ++j) {
             // calculate string offset of head position
             if (j < head_position) {
