@@ -1,4 +1,5 @@
 #pragma once
+#include <stdio.h>
 
 int get_file_line_count(FILE *file_ptr);
 
