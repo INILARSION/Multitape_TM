@@ -71,11 +71,3 @@ struct program {
     // 0 = False, 1 = True
     int is_verbose;
 };
-
-struct configuration {
-    int state;
-    struct tapes *tapes;
-    int *head_positions;
-    struct configuration *father;
-    struct configuration *child;
-};
