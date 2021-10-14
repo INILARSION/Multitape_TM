@@ -5,6 +5,7 @@
 #include "helper.h"
 #include "math.h"
 
+// get the number of digits of a number
 int int_length(int number) {
     return (int) floor(log10(abs(number))) + 1;
 }
@@ -41,6 +42,7 @@ void print_tapes(struct tapes *tapes, struct program *program, char *prefix, int
 void print_delta(struct program *program, struct deltas *delta) {
     printf("Delta: %s,", program->state_names[delta->state]);
 
+    // print read symbols
     for (int i = 0; i < program->head_count; ++i) {
         printf("%s", program->alphabet[delta->read_symbols[i]]);
         if (i < program->head_count - 1)
@@ -49,6 +51,7 @@ void print_delta(struct program *program, struct deltas *delta) {
 
     printf(",%s,", program->state_names[delta->subsequent_state]);
 
+    // print write symbols
     for (int i = 0; i < program->head_count; ++i) {
         printf("%s", program->alphabet[delta->write_symbols[i]]);
         if (i < program->head_count - 1)
@@ -57,6 +60,7 @@ void print_delta(struct program *program, struct deltas *delta) {
 
     printf(",");
 
+    // print movements
     for (int i = 0; i < program->head_count; ++i) {
         printf("%c", delta->movements[i]);
         if (i < program->head_count - 1)
@@ -68,13 +72,13 @@ void print_delta(struct program *program, struct deltas *delta) {
 
 
 void simulate(struct tapes *tapes, struct program *program) {
-    //struct configuration *configuration = malloc(sizeof(struct configuration));
     int *head_positions = calloc(program->head_count, sizeof(int));
     int current_state = program->start_state;
     struct sorted_deltas *deltas_of_state;
     struct deltas *delta = NULL;
     int wrong_read_symbol = 0;
 
+    // calculate delta of current state until no applicable delta can be found
     while (1) {
         deltas_of_state = &program->state_delta_mapping[current_state];
 
@@ -96,7 +100,7 @@ void simulate(struct tapes *tapes, struct program *program) {
         }
         // No delta found
         if (delta == NULL) {
-            printf("Nicht Akzeptiert!\n");
+            printf("Turing machine halted in a not accepting state!\n");
             break;
         }
 
@@ -149,12 +153,12 @@ void simulate(struct tapes *tapes, struct program *program) {
         current_state = delta->subsequent_state;
 
         if (current_state == program->accept_state) {
-            printf("Accepted!\n");
+            printf("Turing machine halted in an accepting state!\n");
             print_delta(program, delta);
             print_tapes(tapes, program, "Final tape", head_positions);
             break;
         } else if (current_state == program->reject_state) {
-            printf("Nicht Akzeptiert!\n");
+            printf("Turing machine halted in a not accepting state!\n");
             break;
         }
         delta = NULL;

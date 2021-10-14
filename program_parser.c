@@ -75,6 +75,9 @@ void parse_alphabet(struct program *program, char *line, size_t line_length) {
     }
 }
 
+/*
+ * Search index of item in a list of items
+ */
 int search_match(char *item, char **elements, int element_count) {
     int found_match = -1;
     int matched_index;
@@ -93,17 +96,24 @@ int search_match(char *item, char **elements, int element_count) {
 }
 
 /*
- * Get index of matching state name of first substring in the line.
+ * Get index of matching element of first substring in the line.
  */
 int search_matching_element(char **line, char **elements, int element_count) {
     char *tmp_str = strsep(line, ",");
     return search_match(tmp_str, elements, element_count);
 }
 
-
+/*
+ * Get first substring of line.
+ * Substring contains multiple divided items
+ * Search index for each item in element list
+ */
 int *search_matching_elements(char **line, int item_count, char **elements, int element_count) {
+    // list of items is divided by ','
     char *item_list = strsep(line, ",");
     int *match_list = malloc(item_count * sizeof(int));
+    // each item is divided by '|'
+    // find index for each item
     for (int i = 0; i < item_count; ++i) {
         char *item = strsep(&item_list, "|");
         match_list[i] = search_match(item, elements, element_count);
@@ -112,6 +122,9 @@ int *search_matching_elements(char **line, int item_count, char **elements, int 
     return match_list;
 }
 
+/*
+ * Return chars of the movement for each head
+ */
 char *get_movements(char *movement_list, int item_count) {
     if (movement_list[strlen(movement_list) - 1] == '\n')
         movement_list[strlen(movement_list) - 1] = '\0';

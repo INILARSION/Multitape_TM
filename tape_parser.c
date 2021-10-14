@@ -75,6 +75,7 @@ struct tapes *parse_tape(char *tape_file_path, struct program *program){
     struct tape *tape;
     char *tmp_line;
 
+    // each line contains one tape
     for (int i = 0; i < line_count; ++i) {
         tape = malloc(sizeof(struct tape));
 
