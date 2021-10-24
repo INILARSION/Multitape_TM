@@ -2,7 +2,7 @@
 
 This is a multitape Turing machine Simulator.
 
-A multitape Turing machine can have multiple tapes and heads, which can move independently of each other.
+A multitape Turing machine differs from a standard Turing machine by having multiple tapes and heads, which can move independently of each other.
 
 Build it with the Makefile by executing `make`.
 
